@@ -4,6 +4,8 @@
 #include "graph.hpp"
 #include "print.hpp"
 
+void printpath(lib::graph<int> g, int s, int d);
+
 void BreadthFirstSearch(lib::graph<int> g, int s)
 {
 	int white = 0, gray = 1, black = 2;
@@ -43,6 +45,16 @@ void BreadthFirstSearch(lib::graph<int> g, int s)
 	{
 		std::cout << g[vertex].distance << " ";
 	}
+	std::cout <<'\n';
+	printpath(g,s,3);
+}
+
+void printpath(lib::graph<int> g, int s, int d)
+{
+	if (s == d) std::cout << s << ":";
+	else if(g[d].prev==nullptr){std::cout << "No path exists";}
+	else printpath(g,s,g[d].prev->val);
+	std::cout << d << " ";
 }
 
 int main(int argc, char *argv[])

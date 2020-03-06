@@ -25,12 +25,14 @@ template <typename T>
 class GraphNode
 {
 public:
+    T val;
     T color,distance;
     GraphNode<T>* prev;
     std::vector<T> list;
-    GraphNode(std::vector<T> l)
+    GraphNode(T value,std::vector<T> l)
     {
         list = l;
+        val=value;
     }
     GraphNode(std::initializer_list<T> l)
     {
