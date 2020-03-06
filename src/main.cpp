@@ -1,77 +1,76 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include "graph.hpp"
-#include "print.hpp"
+#include <map>
+#include <initializer_list>
 
-template <typename T>
-void printpath(lib::graph<T> g, T s, T d);
+typedef std::vector<char> list;
+typedef std::map<char, list> graph;
 
-template <typename T>
-void BreadthFirstSearch(lib::graph<T> g, T s)
+void printpath(graph g, char s, char d, std::map<char, char> prev);
+
+void dfs(graph g, char s, char d = ' ')
 {
-	int white = 0, gray = 1, black = 2;
-	int total_vertices = g.vertices.size();
-	for (auto vertex : g.vertices)
+	int white = 0, gray = 1, black = -1;
+	std::map<char, int> color, distance;
+	std::map<char, char> prev;
+	for (auto elem : g)
 	{
-		g[vertex].color = white;
-		g[vertex].distance = INT16_MAX;
-		g[vertex].prev = nullptr;
+		auto c = elem.first;
+		color[c] = white;
+		distance[c] = -1;
+		prev[c] = ' ';
 	}
-	g[s].color = gray;
-	g[s].distance = 0;
-
-	std::queue<int> q;
+	color[s] = gray;
+	distance[s] = 0;
+	std::queue<char> q;
 	q.push(s);
 	while (!q.empty())
 	{
-		int u = q.front();
-
+		auto u = q.front();
 		q.pop();
-
-		for (auto vertex : g[u].list)
+		for (auto vertex : g[u])
 		{
-			auto v = g[vertex];
-
-			if (g[vertex].color == white)
+			if (color[vertex] == white)
 			{
-				g[vertex].color = gray;
-				g[vertex].distance = g[u].distance + 1;
-				g[vertex].prev = &g[u];
+				color[vertex] = gray;
+				distance[vertex] = distance[u] + 1;
+				prev[vertex] = u;
 				q.push(vertex);
 			}
 		}
-		g[u].color = black;
+		color[u] = black;
 	}
-	for (auto vertex : g.vertices)
+
+	for (auto elem : distance)
 	{
-		std::cout << g[vertex].distance << " ";
+		std::cout << elem.second << " ";
 	}
-	std::cout << '\n';
-	printpath(g, s, 'e');
+	std::cout<<'\n';
+	if (d == ' ')
+		return;
+	printpath(g, s,d, prev);
 }
 
-template <typename T>
-void printpath(lib::graph<T> g, T s, T d)
+void printpath(graph g, char s, char d, std::map<char, char> prev)
 {
 	if (s == d)
 		std::cout << s << ":";
-	else if (g[d].prev == nullptr)
-	{
-		std::cout << "No path exists";
-	}
-	else
-		printpath(g, s, g[d].prev->val);
-	std::cout << d << " ";
+	else if (prev[d] == ' ')
+		return;
+	else printpath(g, s, prev[d], prev);
+	std::cout << d << ' ';
 }
 
-int main(int argc, char *argv[])
+main(int argc, char const *argv[])
 {
-	lib::graph g({{'a', 'b', 'c'},
-				  {'b', 'a'},
-				  {'c', 'a', 'b', 'd'},
-				  {'d', 'c', 'e'},
-				  {'e'}});
-	std::cout << g.v << "\n";
-	BreadthFirstSearch(g, 'b');
+	graph g;
+	g['a'] = list({'b', 'c'});
+	g['b'] = list({'a'});
+	g['c'] = list({'a', 'b', 'd'});
+	g['d'] = list({'c', 'e'});
+	g['e'] = list();
+
+	dfs(g, 'b', 'e');
+	return 0;
 }
