@@ -4,16 +4,18 @@
 #include "graph.hpp"
 #include "print.hpp"
 
-void printpath(lib::graph<int> g, int s, int d);
+template <typename T>
+void printpath(lib::graph<T> g, T s, T d);
 
-void BreadthFirstSearch(lib::graph<int> g, int s)
+template <typename T>
+void BreadthFirstSearch(lib::graph<T> g, T s)
 {
 	int white = 0, gray = 1, black = 2;
 	int total_vertices = g.vertices.size();
 	for (auto vertex : g.vertices)
 	{
 		g[vertex].color = white;
-		g[vertex].distance = INT32_MAX;
+		g[vertex].distance = INT16_MAX;
 		g[vertex].prev = nullptr;
 	}
 	g[s].color = gray;
@@ -45,26 +47,31 @@ void BreadthFirstSearch(lib::graph<int> g, int s)
 	{
 		std::cout << g[vertex].distance << " ";
 	}
-	std::cout <<'\n';
-	printpath(g,s,3);
+	std::cout << '\n';
+	printpath(g, s, 'e');
 }
 
-void printpath(lib::graph<int> g, int s, int d)
+template <typename T>
+void printpath(lib::graph<T> g, T s, T d)
 {
-	if (s == d) std::cout << s << ":";
-	else if(g[d].prev==nullptr){std::cout << "No path exists";}
-	else printpath(g,s,g[d].prev->val);
+	if (s == d)
+		std::cout << s << ":";
+	else if (g[d].prev == nullptr)
+	{
+		std::cout << "No path exists";
+	}
+	else
+		printpath(g, s, g[d].prev->val);
 	std::cout << d << " ";
 }
 
 int main(int argc, char *argv[])
 {
-	lib::graph g({{10, 1, 2, 4},
-				  {1, 10, 2},
-				  {2, 10, 1, 3, 4},
-				  {3, 2},
-				  {4, 10, 2}});
+	lib::graph g({{'a', 'b', 'c'},
+				  {'b', 'a'},
+				  {'c', 'a', 'b', 'd'},
+				  {'d', 'c', 'e'},
+				  {'e'}});
 	std::cout << g.v << "\n";
-	// std::cout << g[10].color;
-	BreadthFirstSearch(g, 1);
+	BreadthFirstSearch(g, 'b');
 }

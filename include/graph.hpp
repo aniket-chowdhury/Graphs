@@ -23,8 +23,12 @@ public:
         {
             T first = *(inner_list->begin());
             vertices.push_back(first);
-            std::vector<T> second(inner_list->begin() + 1, inner_list->end());
-            v.push_back(std::make_pair(first, GraphNode<T>(first,second)));
+                std::vector<T> second;
+            if (inner_list->begin() + 1 == inner_list->end())
+                second;
+            else
+                second=std::vector<T>(inner_list->begin() + 1, inner_list->end());
+            v.push_back(std::make_pair(first, GraphNode<T>(first, second)));
         }
     };
 

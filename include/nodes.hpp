@@ -26,7 +26,7 @@ class GraphNode
 {
 public:
     T val;
-    T color,distance;
+    int color,distance;
     GraphNode<T>* prev;
     std::vector<T> list;
     GraphNode(T value,std::vector<T> l)
