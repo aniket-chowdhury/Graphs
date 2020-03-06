@@ -9,7 +9,6 @@
 #include <iostream>
 #include <algorithm>
 
-
 namespace lib
 {
 template <typename T>
@@ -43,13 +42,18 @@ public:
         return out;
     }
 
-    std::vector<T> &operator[](T i)
+    GraphNode<T> &adjacnecyList(T i)
     {
         auto isThis = [i](std::pair<T, GraphNode<T>> p) {
             return p.first == i;
         };
         auto it = std::find_if(v.begin(), v.end(), isThis);
-        return it->second.list;
+        return it->second;
+    }
+
+    GraphNode<T> &operator[](T i)
+    {
+        return adjacnecyList(i);
     }
 };
 

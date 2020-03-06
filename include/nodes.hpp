@@ -25,6 +25,8 @@ template <typename T>
 class GraphNode
 {
 public:
+    T color,distance;
+    GraphNode<T>* prev;
     std::vector<T> list;
     GraphNode(std::vector<T> l)
     {

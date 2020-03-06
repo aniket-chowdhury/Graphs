@@ -53,6 +53,5 @@ int main(int argc, char *argv[])
 				  {3, 2},
 				  {4, 10, 2}});
 	std::cout << g.v << "\n";
-	// std::cout << g[10].color;
 	BreadthFirstSearch(g, 1);
 }
