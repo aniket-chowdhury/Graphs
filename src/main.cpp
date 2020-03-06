@@ -9,5 +9,5 @@ int main(int argc, char *argv[])
 				  {3, 1, 2, 4, 5},
 				  {4, 2, 3},
 				  {5, 1, 3}});
-	std::cout << g;
+	g[1];
 }

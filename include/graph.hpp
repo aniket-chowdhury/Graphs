@@ -3,6 +3,7 @@
 #include <vector>
 #include <initializer_list>
 #include <iostream>
+#include <algorithm>
 
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const std::initializer_list<T> l)
@@ -44,6 +45,15 @@ public:
             out << "\n";
         }
         return out;
+    }
+
+    std::vector<T>& operator [](T i){
+        auto isThis=[i](std::pair<T, GraphNode<T>> p){
+            return p.first==i;
+        };
+        auto it = std::find_if(v.begin(),v.end(),isThis);
+        return it->second.list;
+        // return std::vector<T> v(10);
     }
 };
 
