@@ -7,59 +7,51 @@
 typedef std::vector<char> list;
 typedef std::map<char, list> graph;
 
-void printpath(graph g, char s, char d, std::map<char, char> prev);
+int white = 0, gray = 1, black = 2;
 
-void bfs(graph g, char s, char d = ' ')
+void dfs_visit(graph g, char u);
+
+int time_count;
+std::map<char, int> color;
+std::map<char, char> prev;
+std::map<char, std::pair<int, int>> times;
+
+void dfs(graph g)
 {
-	int white = 0, gray = 1, black = -1;
-	std::map<char, int> color, distance;
-	std::map<char, char> prev;
 	for (auto elem : g)
 	{
 		auto c = elem.first;
 		color[c] = white;
-		distance[c] = -1;
 		prev[c] = ' ';
+		times[c] = std::make_pair(0, 0);
 	}
-	color[s] = gray;
-	distance[s] = 0;
-	std::queue<char> q;
-	q.push(s);
-	while (!q.empty())
+	time_count = 0;
+	for (auto elem : g)
 	{
-		auto u = q.front();
-		q.pop();
-		for (auto vertex : g[u])
+		auto c = elem.first;
+		if (color[c] == white)
 		{
-			if (color[vertex] == white)
-			{
-				color[vertex] = gray;
-				distance[vertex] = distance[u] + 1;
-				prev[vertex] = u;
-				q.push(vertex);
-			}
+			dfs_visit(g, c);
 		}
-		color[u] = black;
 	}
-
-	for (auto elem : distance)
-	{
-		std::cout << elem.second << " ";
-	}
-	std::cout<<'\n';
-	if (d == ' ')
-		return;
-	printpath(g, s,d, prev);
 }
 
-void printpath(graph g, char s, char d, std::map<char, char> prev)
+void dfs_visit(graph g, char u)
 {
-	if (s == d)
-		std::cout << s << ":";
-	else if (prev[d] == ' ')
-		return;
-	else printpath(g, s, prev[d], prev);
-	std::cout << d << ' ';
+	time_count += 1;
+	times[u].first = time_count;
+	color[u] = gray;
+	for (auto v : g[u])
+	{
+		if (color[v] == white)
+		{
+			prev[v] = u;
+			dfs_visit(g, v);
+		}
+	}
+	color[u] = black;
+	time_count += 1;
+	times[u].second = time_count;
 }
 
 main(int argc, char const *argv[])
@@ -70,7 +62,13 @@ main(int argc, char const *argv[])
 	g['c'] = list({'a', 'b', 'd'});
 	g['d'] = list({'c', 'e'});
 	g['e'] = list();
+	dfs(g);
 
-	bfs(g, 'b', 'e');
+	for (auto &&i : times)
+	{
+		std::cout << i.first << " " << i.second.first << " " << i.second.second << "\n";
+	}
+	
+
 	return 0;
 }
