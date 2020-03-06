@@ -2,22 +2,13 @@
 #define GRAPH 1
 
 #include "nodes.hpp"
+#include "print.hpp"
 #include <utility>
 #include <vector>
 #include <initializer_list>
 #include <iostream>
 #include <algorithm>
 
-template <typename T>
-std::ostream &operator<<(std::ostream &out, const std::initializer_list<T> l)
-{
-    for (auto it = l.begin(); it < l.end(); it++)
-    {
-        out << *it;
-    }
-    out << "\n";
-    return out;
-}
 
 namespace lib
 {

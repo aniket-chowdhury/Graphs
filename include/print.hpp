@@ -29,4 +29,16 @@ std::ostream &operator<<(std::ostream &out, const std::vector<T> vec)
     return out;
 }
 
+template <typename T>
+std::ostream &operator<<(std::ostream &out, const std::initializer_list<T> l)
+{
+    for (auto it = l.begin(); it < l.end(); it++)
+    {
+        out << *it;
+    }
+    out << "\n";
+    return out;
+}
+
+
 #endif // PRINT
