@@ -9,7 +9,7 @@ typedef std::map<char, list> graph;
 
 void printpath(graph g, char s, char d, std::map<char, char> prev);
 
-void dfs(graph g, char s, char d = ' ')
+void bfs(graph g, char s, char d = ' ')
 {
 	int white = 0, gray = 1, black = -1;
 	std::map<char, int> color, distance;
@@ -71,6 +71,6 @@ main(int argc, char const *argv[])
 	g['d'] = list({'c', 'e'});
 	g['e'] = list();
 
-	dfs(g, 'b', 'e');
+	bfs(g, 'b', 'e');
 	return 0;
 }
