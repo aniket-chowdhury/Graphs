@@ -29,4 +29,4 @@ std::ostream &operator<<(std::ostream &out, const std::vector<T> vec)
     return out;
 }
 
-#endif // DEBUG
+#endif // PRINT

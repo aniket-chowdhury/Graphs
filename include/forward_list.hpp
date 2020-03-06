@@ -1,3 +1,6 @@
+#ifndef FORWARD_LIST
+#define FORWARD_LIST 1
+
 #include "nodes.hpp"
 
 namespace lib
@@ -35,3 +38,4 @@ public:
 };
 
 } // namespace lib
+#endif // FORWARD_LIST

@@ -1,3 +1,6 @@
+#ifndef NODES
+#define NODES 1
+
 #include <initializer_list>
 #include <vector>
 #include "print.hpp"
@@ -32,9 +35,12 @@ public:
         list = std::vector<T>(l);
     }
 
-    friend std::ostream& operator<<(std::ostream& out,const GraphNode g){
+    friend std::ostream &operator<<(std::ostream &out, const GraphNode g)
+    {
         out << g.list;
         return out;
-    } 
+    }
 };
 } // namespace lib
+
+#endif // NODES

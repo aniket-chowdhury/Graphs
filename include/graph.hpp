@@ -1,3 +1,6 @@
+#ifndef GRAPH
+#define GRAPH 1
+
 #include "nodes.hpp"
 #include <utility>
 #include <vector>
@@ -60,3 +63,4 @@ public:
 };
 
 } // namespace lib
+#endif // GRAPH
