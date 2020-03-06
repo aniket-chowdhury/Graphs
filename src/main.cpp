@@ -3,6 +3,7 @@
 #include <queue>
 #include <map>
 #include <initializer_list>
+#include <algorithm>
 
 typedef std::vector<char> list;
 typedef std::map<char, list> graph;
@@ -54,6 +55,26 @@ void dfs_visit(graph g, char u)
 	times[u].second = time_count;
 }
 
+void topological_sort(graph g)
+{
+	dfs(g);
+	std::vector<std::pair<char, int>> v;
+	for (auto &&i : times)
+	{
+		v.push_back(std::make_pair(i.first, i.second.second));
+	}
+	auto ThisComp = [](std::pair<char, int> p1, std::pair<char, int> p2) {
+		return p1.second>p2.second;
+	};
+	std::sort(v.begin(), v.end(), ThisComp);
+	std::cout << "Topological Sort: ";
+	for (auto &i : v)
+	{
+		std::cout<<i.first<<" ";
+	}
+	
+}
+
 main(int argc, char const *argv[])
 {
 	graph g;
@@ -62,13 +83,6 @@ main(int argc, char const *argv[])
 	g['c'] = list({'a', 'b', 'd'});
 	g['d'] = list({'c', 'e'});
 	g['e'] = list();
-	dfs(g);
-
-	for (auto &&i : times)
-	{
-		std::cout << i.first << " " << i.second.first << " " << i.second.second << "\n";
-	}
-	
-
+	topological_sort(g);
 	return 0;
 }
