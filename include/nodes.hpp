@@ -1,5 +1,6 @@
 #include <initializer_list>
 #include <vector>
+#include "print.hpp"
 
 namespace lib
 {
@@ -30,5 +31,10 @@ public:
     {
         list = std::vector<T>(l);
     }
+
+    friend std::ostream& operator<<(std::ostream& out,const GraphNode g){
+        out << g.list;
+        return out;
+    } 
 };
 } // namespace lib

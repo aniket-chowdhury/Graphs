@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "graph.hpp"
+#include "print.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -9,5 +10,5 @@ int main(int argc, char *argv[])
 				  {3, 1, 2, 4, 5},
 				  {4, 2, 3},
 				  {5, 1, 3}});
-	g[1];
+	std::cout << g.v;
 }

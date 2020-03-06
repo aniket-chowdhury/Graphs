@@ -23,11 +23,13 @@ class graph
 {
 public:
     std::vector<std::pair<T, GraphNode<T>>> v;
+    std::vector<T> vertices;
     graph(std::initializer_list<std::initializer_list<T>> l)
     {
         for (auto inner_list = l.begin(); inner_list < l.end(); inner_list++)
         {
             T first = *(inner_list->begin());
+            vertices.push_back(first);
             std::vector<T> second(inner_list->begin() + 1, inner_list->end());
             v.push_back(std::make_pair(first, GraphNode<T>(second)));
         }
@@ -47,13 +49,13 @@ public:
         return out;
     }
 
-    std::vector<T>& operator [](T i){
-        auto isThis=[i](std::pair<T, GraphNode<T>> p){
-            return p.first==i;
+    std::vector<T> &operator[](T i)
+    {
+        auto isThis = [i](std::pair<T, GraphNode<T>> p) {
+            return p.first == i;
         };
-        auto it = std::find_if(v.begin(),v.end(),isThis);
+        auto it = std::find_if(v.begin(), v.end(), isThis);
         return it->second.list;
-        // return std::vector<T> v(10);
     }
 };
 
