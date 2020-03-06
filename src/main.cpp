@@ -2,87 +2,63 @@
 #include <vector>
 #include <queue>
 #include <map>
-#include <initializer_list>
-#include <algorithm>
+#include "graph.hpp"
+#include "print.hpp"
 
-typedef std::vector<char> list;
-typedef std::map<char, list> graph;
 
 int white = 0, gray = 1, black = 2;
+std::map<char,std::pair<int,int>> times;
+int time_count=0;
+std::map<char,char> before;
 
-void dfs_visit(graph g, char u);
+template <typename T>
+void dfs_visit(lib::graph<T> g,T u);
 
-int time_count;
-std::map<char, int> color;
-std::map<char, char> prev;
-std::map<char, std::pair<int, int>> times;
-
-void dfs(graph g)
+template <typename T>
+void DephFirstSearch(lib::graph<T> g)
 {
-	for (auto elem : g)
+	for (auto vertex : g.vertices)
 	{
-		auto c = elem.first;
-		color[c] = white;
-		prev[c] = ' ';
-		times[c] = std::make_pair(0, 0);
+		g[vertex].color = white;
+		g[vertex].prev = nullptr;
 	}
-	time_count = 0;
-	for (auto elem : g)
+
+	for(auto vertex : g.vertices)
 	{
-		auto c = elem.first;
-		if (color[c] == white)
-		{
-			dfs_visit(g, c);
+		if(g[vertex].color==white)
+			dfs_visit(g,vertex);
+	}
+
+	for(auto v : before)
+	{
+		std::cout  << v.first << " " << v.second << "\n";
+	}
+}
+
+
+template <typename T>
+void dfs_visit(lib::graph<T> g,T u){
+	time_count+=1;
+	g[u].color=gray;
+	times[u].first=time_count;
+	for(auto v : g[u].list)
+	{
+		if(g[v].color==white){
+			g[v].prev=&g[u];
+			before[v]=u;
+			dfs_visit(g,v);
 		}
 	}
+	g[u].color=black;
 }
 
-void dfs_visit(graph g, char u)
+int main(int argc, char *argv[])
 {
-	time_count += 1;
-	times[u].first = time_count;
-	color[u] = gray;
-	for (auto v : g[u])
-	{
-		if (color[v] == white)
-		{
-			prev[v] = u;
-			dfs_visit(g, v);
-		}
-	}
-	color[u] = black;
-	time_count += 1;
-	times[u].second = time_count;
-}
-
-void topological_sort(graph g)
-{
-	dfs(g);
-	std::vector<std::pair<char, int>> v;
-	for (auto &&i : times)
-	{
-		v.push_back(std::make_pair(i.first, i.second.second));
-	}
-	auto ThisComp = [](std::pair<char, int> p1, std::pair<char, int> p2) {
-		return p1.second>p2.second;
-	};
-	std::sort(v.begin(), v.end(), ThisComp);
-	std::cout << "Topological Sort: ";
-	for (auto &i : v)
-	{
-		std::cout<<i.first<<" ";
-	}
-	
-}
-
-main(int argc, char const *argv[])
-{
-	graph g;
-	g['a'] = list({'b', 'c'});
-	g['b'] = list({'a'});
-	g['c'] = list({'a', 'b', 'd'});
-	g['d'] = list({'c', 'e'});
-	g['e'] = list();
-	topological_sort(g);
-	return 0;
+	lib::graph g({{'a', 'b', 'c'},
+				  {'b', 'a'},
+				  {'c', 'a', 'b', 'd'},
+				  {'d', 'c', 'e'},
+				  {'e'}});
+	std::cout << g.v << "\n";
+	DephFirstSearch(g);
 }
